@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My English Book · Audios</title>
+<style>
+:root{--u:#1E88E5;--ink:#17212b;--muted:#5d6875;--bg:#f3f6fa;--card:#fff;--line:#e2e8f0;--r:16px}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);padding-bottom:120px}
+button{font:inherit;cursor:pointer}
+/* ---------- header ---------- */
+header{background:var(--u);color:#fff;padding:18px 16px 0;transition:background .3s}
+.top{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.logo{width:46px;height:46px;border-radius:14px;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.6rem;flex:none}
+.top h1{margin:0;font-size:1.25rem;line-height:1.2}
+.top p{margin:2px 0 0;font-size:.85rem;opacity:.9}
+.gear{margin-left:auto;background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:12px;padding:9px 12px;font-size:.9rem;font-weight:600}
+.search{max-width:820px;margin:14px auto 0;position:relative}
+.search input{width:100%;border:0;border-radius:12px;padding:12px 14px 12px 40px;font-size:1rem;background:#fff;color:var(--ink)}
+.search span{position:absolute;left:13px;top:50%;transform:translateY(-50%);opacity:.6}
+.tabs{max-width:820px;margin:12px auto 0;display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:0;border-radius:999px;padding:8px 14px;background:rgba(255,255,255,.2);color:#fff;font-weight:600;font-size:.9rem;white-space:nowrap}
+.tab.on{background:#fff;color:var(--u)}
+/* ---------- main ---------- */
+main{max-width:820px;margin:0 auto;padding:16px}
+.unithead{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
+.unithead h2{margin:0;font-size:1.15rem}
+.unithead small{color:var(--muted)}
+.playall{margin-left:auto;border:2px solid var(--u);color:var(--u);background:#fff;border-radius:999px;padding:6px 12px;font-weight:700;font-size:.85rem}
+.card{background:var(--card);border-radius:var(--r);box-shadow:0 1px 3px rgba(15,23,42,.08);margin-bottom:12px;overflow:hidden;border:2px solid transparent;transition:border-color .2s, box-shadow .2s}
+.card.active{border-color:var(--c);box-shadow:0 6px 18px rgba(15,23,42,.12)}
+.row{display:flex;align-items:center;gap:12px;padding:14px}
+.num{flex:none;min-width:52px;height:52px;border-radius:14px;background:var(--cl);color:var(--c);font-weight:800;display:flex;align-items:center;justify-content:center;font-size:1.05rem}
+.info{flex:1;min-width:0}
+.info b{display:block;font-size:1rem;line-height:1.25}
+.info .ins{font-size:.86rem;color:var(--muted);margin-top:2px}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;border-radius:999px;padding:2px 8px;margin-top:6px;background:#f1f4f8;color:#475569}
+.pbtn{flex:none;width:56px;height:56px;border-radius:50%;border:0;background:var(--c);color:#fff;font-size:1.3rem;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 10px rgba(0,0,0,.18)}
+.pbtn:active{transform:scale(.95)}
+.stage{display:flex;flex-wrap:wrap;gap:6px;padding:0 14px 8px}
+.who{display:flex;flex-direction:column;align-items:center;width:60px;opacity:.5;transition:.2s}
+.who .av{font-size:1.6rem;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:3px solid transparent;background:#f3f5f8}
+.who small{font-size:.68rem;text-align:center;margin-top:2px;line-height:1.1}
+.who.talk{opacity:1}
+.who.talk .av{animation:bob .45s infinite alternate}
+@keyframes bob{from{transform:scale(1)}to{transform:scale(1.14)}}
+.foot{display:flex;align-items:center;gap:8px;padding:0 14px 12px}
+.toggle{border:0;background:#f1f4f8;color:#334155;border-radius:999px;padding:7px 12px;font-size:.84rem;font-weight:600}
+.done{font-size:.8rem;color:#16a34a;font-weight:700;margin-left:auto;display:none}
+.card.heard .done{display:inline}
+.script{display:none;padding:4px 14px 16px;border-top:1px solid var(--line)}
+.script.show{display:block}
+.line{margin:6px 0;font-size:.95rem;line-height:1.45;padding:4px 8px;border-radius:8px}
+.bub{display:flex;gap:8px;align-items:flex-end;margin:8px 0}
+.bub.right{flex-direction:row-reverse}
+.bub .em{font-size:1.35rem}
+.bub .tx{background:#f1f4f8;border-radius:14px;padding:8px 12px;max-width:80%;border-left:4px solid #ccc;font-size:.95rem;line-height:1.4}
+.bub.right .tx{border-left:0;border-right:4px solid #ccc}
+.bub .tx b{display:block;font-size:.76rem}
+.now .tx,.line.now{background:#fff3c4}
+.empty{text-align:center;color:var(--muted);padding:30px}
+/* ---------- mini player ---------- */
+.player{position:fixed;left:0;right:0;bottom:0;background:#fff;box-shadow:0 -4px 16px rgba(15,23,42,.12);padding:10px 14px calc(10px + env(safe-area-inset-bottom));transform:translateY(110%);transition:transform .25s;z-index:5}
+.player.show{transform:none}
+.pin{max-width:820px;margin:0 auto}
+.pt{display:flex;align-items:center;gap:10px}
+.pav{font-size:1.6rem;width:44px;height:44px;border-radius:50%;background:#f3f5f8;display:flex;align-items:center;justify-content:center;flex:none;border:3px solid var(--pc,#1E88E5)}
+.ptx{flex:1;min-width:0}
+.ptx b{display:block;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ptx span{font-size:.8rem;color:var(--muted)}
+.ctr{display:flex;gap:6px;flex:none}
+.cb{width:42px;height:42px;border-radius:50%;border:0;background:#f1f4f8;font-size:1rem;color:#1f2937}
+.cb.main{width:48px;height:48px;background:var(--pc,#1E88E5);color:#fff;font-size:1.15rem}
+.bar{height:5px;background:#e8edf3;border-radius:99px;margin-top:9px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--pc,#1E88E5);transition:width .3s}
+/* ---------- settings ---------- */
+.sheet{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;z-index:10;align-items:flex-end;justify-content:center}
+.sheet.show{display:flex}
+.panel{background:#fff;width:100%;max-width:620px;max-height:88vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 18px 28px}
+.panel h3{margin:0 0 4px}
+.panel .x{float:right;border:0;background:#f1f4f8;border-radius:50%;width:36px;height:36px}
+.sec{margin-top:16px}
+.sec label.t{display:block;font-weight:700;font-size:.9rem;margin-bottom:6px}
+.seg{display:flex;background:#f1f4f8;border-radius:12px;padding:4px;gap:4px}
+.seg button{flex:1;border:0;background:none;border-radius:9px;padding:9px 4px;font-weight:600;font-size:.88rem;color:#334155}
+.seg button.on{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);color:var(--u)}
+.sw{display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:12px;padding:10px 12px}
+.vinfo{font-size:.84rem;color:var(--muted);line-height:1.45;background:#f8fafc;border-radius:12px;padding:10px 12px}
+.vinfo.warn{background:#fff7d6;color:#5b4a00}
+.castrow{display:flex;align-items:center;gap:8px;font-size:.88rem;margin:6px 0}
+.castrow b{min-width:100px}
+.castrow select{flex:1;min-width:0;font-size:.85rem;padding:6px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.castrow button{border:0;background:#f1f4f8;border-radius:8px;padding:6px 10px}
+.toast{position:fixed;left:50%;top:16px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 16px;border-radius:12px;font-size:.9rem;display:none;z-index:20;max-width:90%}
+.help{font-size:.85rem;color:var(--muted);line-height:1.5;margin-top:22px;background:#fff;border-radius:var(--r);padding:14px}
+</style></head><body>
+<header id="hdr">
+  <div class="top">
+    <div class="logo">🎧</div>
+    <div><h1>My English Book · Audios</h1><p>Grade 1 · Secondary · American English</p></div>
+    <button class="gear" id="openSet" aria-label="Settings">⚙️ Settings</button>
+  </div>
+  <div class="search"><span>🔎</span><input id="q" type="search" placeholder="Search a track (e.g. 2.4) or a topic (e.g. family)" autocomplete="off"></div>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+<main>
+  <div class="unithead"><div><h2 id="uTitle"></h2><small id="uSub"></small></div><button class="playall" id="playAll">▶ Play all</button></div>
+  <div id="list"></div>
+  <div class="help">💡 <b>How to use:</b> tap ▶ to listen. Only one track plays at a time: if you tap another one, the first one stops. Use the bar at the bottom to pause ⏸, repeat the last sentence ⏮ or skip to the next one ⏭.
+  In <b>🔁 Listen and repeat</b> tracks, there is a pause so you can repeat out loud. "Show text" shows the script (in listening exercises, open it after you answer 😉).</div>
+</main>
+
+<div class="player" id="player"><div class="pin">
+  <div class="pt">
+    <div class="pav" id="pAv">🎙️</div>
+    <div class="ptx"><b id="pTitle">—</b><span id="pSub">—</span></div>
+    <div class="ctr">
+      <button class="cb" id="bPrev" aria-label="Previous sentence">⏮</button>
+      <button class="cb main" id="bPlay" aria-label="Pause or resume">⏸</button>
+      <button class="cb" id="bNext" aria-label="Next sentence">⏭</button>
+      <button class="cb" id="bStop" aria-label="Stop">⏹</button>
+    </div>
+  </div>
+  <div class="bar"><i id="pBar"></i></div>
+</div></div>
+
+<div class="sheet" id="sheet"><div class="panel">
+  <button class="x" id="closeSet" aria-label="Close">✕</button>
+  <h3>⚙️ Settings</h3>
+  <div class="sec"><label class="t">Speed</label>
+    <div class="seg" id="speedSeg"><button data-v="0.75">🐢 Slow</button><button data-v="0.9">Normal</button><button data-v="1.05">🐇 Natural</button></div></div>
+  <div class="sec"><div class="sw"><span>🔔 Sound effects</span><input type="checkbox" id="sfx" checked></div></div>
+  <div class="sec"><label class="t">Voices</label><div class="vinfo" id="vinfo"></div></div>
+  <div class="sec"><label class="t">🎭 Character voices</label><div id="castgrid"></div></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const UNITS=[{"name": "Starter · Welcome to English!", "short": "Starter", "color": "#275BB4", "tracks": [{"id": "S.1", "title": "The alphabet", "instruction": "Listen and repeat the letters.", "mode": "repeat", "lines": ["A, B, C, D, E, F, G.", "H, I, J, K, L, M, N, O, P.", "Q, R, S, T, U, V.", "W, X, Y, Z.", "A, H, J, K.", "B, C, D, E, G, P, T, V, Z.", "F, L, M, N, S, X.", "I, Y.", "O.", "Q, U, W.", "R."]}, {"id": "S.2", "title": "Classroom language", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["Open your book.", "Close your book.", "Sit down.", "Stand up.", "Listen, please.", "Raise your hand.", "I don't understand.", "Can you repeat, please?", "Can I go to the restroom?", "How do you say this in English?", "Can I borrow a pencil?", "I have a question."]}]}, {"name": "Unit 1 · Meeting People", "short": "Unit 1", "color": "#1E88E5", "tracks": [{"id": "1.1", "title": "Greetings and farewells", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["Hello.", "Hi!", "Hey!", "Good morning.", "Good afternoon.", "Good evening.", "Good night.", "How are you?", "I'm fine, thanks. And you?", "I'm great!", "Not bad.", "So-so.", "How's it going?", "Nice to meet you.", "Nice to meet you, too.", "Goodbye.", "Bye!", "See you later.", "See you tomorrow.", "Have a nice day!"]}, {"id": "1.2", "title": "Formal or informal?", "instruction": "Listen to four short conversations. Write F (formal) or I (informal).", "mode": "talk", "lines": [{"who": "Narrator", "text": "Conversation one."}, {"who": "Mrs. Smith", "text": "Good morning, Mr. Torres. How are you?"}, {"who": "Mr. Torres", "text": "I'm very well, thank you, Mrs. Smith. And you?"}, {"who": "Mrs. Smith", "text": "Fine, thank you."}, {"who": "Narrator", "text": "Conversation two."}, {"who": "Tom", "text": "Hey, Diego! How's it going?"}, {"who": "Diego", "text": "Not bad! And you?"}, {"who": "Tom", "text": "Great!"}, {"who": "Narrator", "text": "Conversation three."}, {"who": "Ana", "text": "Good afternoon, Ms. Rivera."}, {"who": "Ms. Rivera", "text": "Good afternoon, Ana. Have a nice day!"}, {"who": "Narrator", "text": "Conversation four."}, {"who": "Lucía", "text": "Hi, Ana! See you tomorrow!"}, {"who": "Ana", "text": "Bye, Lucía!"}]}, {"id": "1.3", "title": "Countries and nationalities", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["Peru. Peruvian.", "Bolivia. Bolivian.", "Brazil. Brazilian.", "Colombia. Colombian.", "Ecuador. Ecuadorian.", "Argentina. Argentinian.", "Mexico. Mexican.", "the United States. American.", "Canada. Canadian.", "Chile. Chilean.", "Japan. Japanese.", "China. Chinese.", "Spain. Spanish.", "England. English.", "France. French."]}, {"id": "1.4", "title": "Meet the new students", "instruction": "Listen and complete the table.", "mode": "talk", "lines": [{"who": "Ms. Rivera", "text": "Hello, everybody! We have four new students today. Please introduce yourselves."}, {"who": "Kenji", "text": "Hi! My name's Kenji. I'm from Japan. I'm Japanese. I'm thirteen years old."}, {"who": "Sofía", "text": "Hello! I'm Sofía. I'm from Mexico, so I'm Mexican. I'm twelve."}, {"who": "Lucas", "text": "Hi, everyone. I'm Lucas. I'm from Brazil. I'm Brazilian, and I'm fourteen."}, {"who": "Emma", "text": "Hello! My name's Emma. I'm from Canada. I'm Canadian. I'm twelve years old."}]}, {"id": "1.5", "title": "Numbers", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["zero", "thirteen, thirty", "fourteen, forty", "fifteen, fifty", "sixteen, sixty", "seventeen, seventy", "eighteen, eighty", "nineteen, ninety", "twenty", "twenty-one", "thirty-five", "forty-seven", "ninety-nine", "one hundred"]}, {"id": "1.6", "title": "Teen or ty?", "instruction": "Listen and circle the number you hear.", "mode": "talk", "lines": [{"who": "Narrator", "text": "Number one: thirty."}, {"who": "Narrator", "text": "Number two: fourteen."}, {"who": "Narrator", "text": "Number three: fifty."}, {"who": "Narrator", "text": "Number four: sixteen."}, {"who": "Narrator", "text": "Number five: eighty."}, {"who": "Narrator", "text": "Number six: nineteen."}]}, {"id": "1.7", "title": "Personal information", "instruction": "Listen and complete the form.", "mode": "talk", "lines": [{"who": "Ms. Rivera", "text": "Hello! What's your name?"}, {"who": "Daniel", "text": "Daniel Ramos."}, {"who": "Ms. Rivera", "text": "How do you spell your last name?"}, {"who": "Daniel", "text": "R, A, M, O, S."}, {"who": "Ms. Rivera", "text": "Thank you. How old are you, Daniel?"}, {"who": "Daniel", "text": "I'm thirteen."}, {"who": "Ms. Rivera", "text": "Where are you from?"}, {"who": "Daniel", "text": "I'm from Arequipa."}, {"who": "Ms. Rivera", "text": "What's your phone number?"}, {"who": "Daniel", "text": "It's nine five one, four eight two, three oh seven."}, {"who": "Ms. Rivera", "text": "And what's your e-mail?"}, {"who": "Daniel", "text": "It's dani dot ramos at mail dot com."}, {"who": "Ms. Rivera", "text": "Great. Thank you, Daniel!"}]}, {"id": "1.8", "title": "Reading: My new pen pal", "instruction": "Listen and read.", "mode": "talk", "lines": [{"who": "Tom", "text": "Hi Ana,"}, {"who": "Tom", "text": "My name is Tom Miller and I'm your new pen pal. I'm twelve years old and I'm from Chicago, in the United States. I'm American. My birthday is in March."}, {"who": "Tom", "text": "I'm in seventh grade at Lincoln Middle School. My school is big and my teachers are very nice. My favorite subject is science. My best friend is Kevin. He's from Mexico, but he is in Chicago now. He's funny and very friendly."}, {"who": "Tom", "text": "My family is small: my mom, my dad, my little sister and me. My mom is a nurse and my dad is a bus driver. My sister's name is Lily. She's seven."}, {"who": "Tom", "text": "What about you? Where are you from? How old are you? What's your favorite subject? Please write back soon!"}, {"who": "Tom", "text": "Your friend, Tom."}]}, {"id": "1.9", "title": "First day at school", "instruction": "Listen and read. Then answer the questions.", "mode": "talk", "lines": [{"who": "Ms. Rivera", "text": "Good morning, class! I'm Ms. Rivera, your English teacher."}, {"who": "Students", "text": "Good morning, Ms. Rivera!"}, {"who": "Ms. Rivera", "text": "This is Tom. He's a new student. He's from Chicago."}, {"who": "Tom", "text": "Hi, everybody! Nice to meet you."}, {"who": "Ana", "text": "Hi, Tom! I'm Ana. Nice to meet you, too. Are you American?"}, {"who": "Tom", "text": "Yes, I am. And you? Where are you from?"}, {"who": "Ana", "text": "I'm from Juliaca. I'm Peruvian. How old are you?"}, {"who": "Tom", "text": "I'm twelve."}, {"who": "Ana", "text": "Me too! This is my friend Lucía. She's from Bolivia."}, {"who": "Lucía", "text": "Hello, Tom! Welcome to our school!"}, {"who": "Tom", "text": "Thanks, Lucía!"}]}, {"id": "1.10", "title": "Pronunciation: contractions", "instruction": "Listen and repeat. Then say the sentences.", "mode": "repeat", "lines": ["I'm.", "I'm Ana.", "You're.", "You're my friend.", "He's.", "He's from Chicago.", "She's.", "She's twelve.", "It's.", "It's a big school.", "We're.", "We're classmates.", "They're.", "They're Peruvian."]}]}, {"name": "Unit 2 · My Family and Friends", "short": "Unit 2", "color": "#E91E8C", "tracks": [{"id": "2.1", "title": "Family members", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["mother. mom.", "father. dad.", "parents.", "grandmother. grandma.", "grandfather. grandpa.", "grandparents.", "brother.", "sister.", "son.", "daughter.", "uncle.", "aunt.", "cousin.", "nephew.", "niece.", "husband.", "wife.", "baby.", "twins.", "only child.", "relatives."]}, {"id": "2.2", "title": "Tom's family photo", "instruction": "Listen and complete the table.", "mode": "talk", "lines": [{"who": "Ana", "text": "Is this your family, Tom?"}, {"who": "Tom", "text": "Yes, it is. This is my mom. Her name is Karen. She's a nurse."}, {"who": "Ana", "text": "And who is this?"}, {"who": "Tom", "text": "That's my dad, Mike. He's a bus driver."}, {"who": "Ana", "text": "Who's the little girl?"}, {"who": "Tom", "text": "That's my sister, Lily. She's seven."}, {"who": "Ana", "text": "Oh, and the dog?"}, {"who": "Tom", "text": "That's Max. He's our dog! And these are my grandparents, Bob and Susan. They're from Texas."}, {"who": "Ana", "text": "You have a nice family, Tom!"}]}, {"id": "2.3", "title": "Personal belongings", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["backpack.", "cell phone.", "watch.", "glasses.", "keys.", "wallet.", "umbrella.", "notebook.", "headphones.", "water bottle.", "jacket.", "cap.", "pencil case.", "ID card."]}, {"id": "2.4", "title": "Lost and found", "instruction": "Listen. Whose is it? Match the things and the owners.", "mode": "talk", "lines": [{"who": "Ms. Rivera", "text": "OK, class. This is the lost and found box. Whose umbrella is this?"}, {"who": "Lucía", "text": "It's Diego's!"}, {"who": "Diego", "text": "Yes, it's my umbrella. Thank you!"}, {"who": "Ms. Rivera", "text": "And whose glasses are these?"}, {"who": "Ana", "text": "They're Tom's."}, {"who": "Tom", "text": "Oh, yes! They're my glasses. Thanks, Ana."}, {"who": "Ms. Rivera", "text": "Whose water bottle is this? It's red."}, {"who": "Lucía", "text": "My water bottle is green. The red bottle is Ana's."}, {"who": "Ana", "text": "Yes, it's my water bottle!"}, {"who": "Ms. Rivera", "text": "And whose keys are these?"}, {"who": "Diego", "text": "Ms. Rivera, they're your keys!"}, {"who": "Ms. Rivera", "text": "Oh! You're right. They're my keys!"}]}, {"id": "2.5", "title": "Adjectives: opposites", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["tall. short.", "young. old.", "big. small.", "new. old.", "happy. sad.", "funny. serious.", "friendly. shy.", "talkative. quiet.", "hardworking. lazy.", "kind. mean."]}, {"id": "2.6", "title": "Reading: Meet my family!", "instruction": "Listen and read Lucía's blog.", "mode": "talk", "lines": [{"who": "Lucía", "text": "Meet my family!"}, {"who": "Lucía", "text": "Hi! I'm Lucía Mamani. I'm twelve and I'm from La Paz, Bolivia, but now I live in Juliaca with my family. My family is big!"}, {"who": "Lucía", "text": "My dad's name is Raúl. He's tall and very hardworking. He's a taxi driver. My mom's name is Gloria. She's kind and funny. She's a nurse."}, {"who": "Lucía", "text": "I have two brothers, Andrés and Pablo. They're twins! They're eight years old and they're very talkative."}, {"who": "Lucía", "text": "My grandma, Julia, is with us too. She's seventy, but she's very active. Her soup is the best in the world!"}, {"who": "Lucía", "text": "We also have a cat. Its name is Michi. It's small and white."}, {"who": "Lucía", "text": "My best friend is Ana. She's Peruvian. She's smart and friendly. Her brother Diego is my brothers' best friend!"}, {"who": "Lucía", "text": "What about your family? Write a comment!"}]}, {"id": "2.7", "title": "Is this your sister?", "instruction": "Listen and read. Then answer the questions.", "mode": "talk", "lines": [{"who": "Tom", "text": "Hey, Diego! Is this your family?"}, {"who": "Diego", "text": "Yes! This is my family at my grandma's birthday party."}, {"who": "Tom", "text": "Who's this tall man?"}, {"who": "Diego", "text": "That's my dad. His name is Luis."}, {"who": "Tom", "text": "And is this your sister?"}, {"who": "Diego", "text": "Yes, that's Ana. You know her!"}, {"who": "Tom", "text": "Ha-ha, of course! And who are these kids?"}, {"who": "Diego", "text": "They're my cousins, Mateo and Valeria. Mateo is ten and Valeria is six. They're very funny."}, {"who": "Tom", "text": "And whose dog is this?"}, {"who": "Diego", "text": "It's my uncle's dog. Its name is Rocky. It's big, but it's very friendly."}, {"who": "Tom", "text": "Cool! Your family is great!"}]}, {"id": "2.8", "title": "Pronunciation: the TH sound", "instruction": "Listen and repeat. Put your tongue between your teeth!", "mode": "repeat", "lines": ["the.", "this.", "that.", "these.", "those.", "they.", "their.", "mother.", "father.", "brother.", "This is my mother.", "That is my father.", "These are my brothers.", "They're with their grandmother."]}]}, {"name": "Unit 3 · Things Around Us", "short": "Unit 3", "color": "#2E9E5B", "tracks": [{"id": "3.1", "title": "Classroom objects", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["board.", "whiteboard.", "desk.", "chair.", "teacher's desk.", "marker.", "eraser.", "ruler.", "scissors.", "glue.", "pencil sharpener.", "notebook.", "dictionary.", "clock.", "map.", "computer.", "projector.", "bookshelf.", "trash can.", "window.", "door."]}, {"id": "3.2", "title": "What's this in English?", "instruction": "Listen and complete with this, that, these or those.", "mode": "talk", "lines": [{"who": "Tom", "text": "Lucía, what's this in English? In Spanish it's a tajador."}, {"who": "Lucía", "text": "It's a pencil sharpener."}, {"who": "Tom", "text": "And what are these? Plumones?"}, {"who": "Lucía", "text": "Yes! These are markers."}, {"who": "Tom", "text": "What's that on the wall?"}, {"who": "Lucía", "text": "That's a map of Peru."}, {"who": "Tom", "text": "Cool! And what are those, next to the window?"}, {"who": "Lucía", "text": "Those are our science projects. They're great!"}]}, {"id": "3.3", "title": "Places in school", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["classroom.", "library.", "computer lab.", "science lab.", "cafeteria.", "gym.", "restroom.", "principal's office.", "nurse's office.", "courtyard.", "soccer field.", "auditorium.", "hallway.", "stairs.", "main entrance.", "teachers' lounge."]}, {"id": "3.4", "title": "Diego's classroom", "instruction": "Listen and complete the table.", "mode": "talk", "lines": [{"who": "Diego", "text": "Hi! I'm Diego. This is my classroom. It's big and sunny."}, {"who": "Diego", "text": "In my classroom, there are thirty desks and thirty-one chairs."}, {"who": "Diego", "text": "There is one big whiteboard, and there are four windows."}, {"who": "Diego", "text": "There isn't a computer, but there is a projector."}, {"who": "Diego", "text": "There are twenty-eight students in my class: fifteen girls and thirteen boys."}, {"who": "Diego", "text": "I love my classroom!"}]}, {"id": "3.5", "title": "Prepositions of place", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["in. The pen is in the pencil case.", "on. The book is on the desk.", "under. The backpack is under the chair.", "next to. The trash can is next to the door.", "between. The clock is between the windows.", "behind. The soccer field is behind the school.", "in front of. The board is in front of the students.", "across from. The library is across from the gym.", "near. The cafeteria is near the courtyard."]}, {"id": "3.6", "title": "Reading: Welcome to Lincoln Middle School!", "instruction": "Listen and read Tom's school guide.", "mode": "talk", "lines": [{"who": "Tom", "text": "Welcome to Lincoln Middle School!"}, {"who": "Tom", "text": "Hi! I'm Tom. This is a short guide to my school in Chicago. Lincoln Middle School is big. There are six hundred students and forty teachers. There are three floors."}, {"who": "Tom", "text": "On the first floor, there is a big cafeteria and a gym. The gym is next to the cafeteria. There is also a nurse's office. It's across from the main entrance."}, {"who": "Tom", "text": "On the second floor, there are twelve classrooms and a library. The library is my favorite place! There are a lot of books, and there are ten computers."}, {"who": "Tom", "text": "On the third floor, there is a science lab and a computer lab. There isn't an auditorium, but there is a big soccer field behind the school."}, {"who": "Tom", "text": "In the hallways, there are lockers. Every student has a locker for his or her books and jacket. Come and visit!"}]}, {"id": "3.7", "title": "A school tour", "instruction": "Ms. Rivera shows Tom the school. Listen and complete the map.", "mode": "talk", "lines": [{"who": "Ms. Rivera", "text": "Welcome to our school, Tom! This is the main entrance."}, {"who": "Tom", "text": "Thank you, Ms. Rivera. Where is the principal's office?"}, {"who": "Ms. Rivera", "text": "It's next to the main entrance, on the left."}, {"who": "Tom", "text": "And where are the restrooms?"}, {"who": "Ms. Rivera", "text": "They're next to the main entrance, on the right."}, {"who": "Tom", "text": "OK. Where's the cafeteria?"}, {"who": "Ms. Rivera", "text": "The cafeteria is across from Classroom 1A. The courtyard is between them."}, {"who": "Tom", "text": "Is there a library?"}, {"who": "Ms. Rivera", "text": "Yes, there is. It's next to the computer lab, on the left."}, {"who": "Tom", "text": "And is there a science lab?"}, {"who": "Ms. Rivera", "text": "Yes. The science lab is next to the computer lab, on the right."}, {"who": "Tom", "text": "Great! Is there a gym?"}, {"who": "Ms. Rivera", "text": "No, there isn't a gym, but there is a big soccer field behind the school."}, {"who": "Tom", "text": "Cool! I love soccer!"}]}, {"id": "3.8", "title": "Pronunciation: short i and long ee", "instruction": "Listen and repeat. Short i, then long ee.", "mode": "repeat", "lines": ["this. these.", "it. eat.", "sit. seat.", "ship. sheep.", "live. leave.", "This is my desk.", "These are my markers.", "Sit on the seat, please."]}]}, {"name": "Unit 4 · My Daily Routine", "short": "Unit 4", "color": "#7C4DFF", "tracks": [{"id": "4.1", "title": "Daily routines", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["wake up.", "get up.", "take a shower.", "brush my teeth.", "get dressed.", "have breakfast.", "go to school.", "have lunch.", "go home.", "do homework.", "play soccer.", "watch TV.", "help at home.", "have dinner.", "read a book.", "go to bed."]}, {"id": "4.2", "title": "What time is it?", "instruction": "Listen and write the time.", "mode": "talk", "lines": [{"who": "Narrator", "text": "Number one. It's seven fifteen."}, {"who": "Narrator", "text": "Number two. It's half past nine."}, {"who": "Narrator", "text": "Number three. It's twelve o'clock. It's noon."}, {"who": "Narrator", "text": "Number four. It's a quarter to four."}, {"who": "Narrator", "text": "Number five. It's six ten."}, {"who": "Narrator", "text": "Number six. It's ten to eleven."}]}, {"id": "4.3", "title": "Ana's morning", "instruction": "Listen and complete Ana's schedule.", "mode": "talk", "lines": [{"who": "Ana", "text": "Hi! This is my morning routine on weekdays."}, {"who": "Ana", "text": "I wake up at six o'clock, but I get up at six fifteen."}, {"who": "Ana", "text": "I take a shower at six twenty."}, {"who": "Ana", "text": "I have breakfast at six forty-five with my family."}, {"who": "Ana", "text": "I go to school at seven fifteen."}, {"who": "Ana", "text": "Classes start at seven forty-five. I'm never late!"}]}, {"id": "4.4", "title": "Adverbs of frequency", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["always. I always brush my teeth.", "usually. She usually walks to school.", "often. We often play soccer.", "sometimes. He sometimes eats fish.", "never. They never arrive late.", "How often do you eat fruit? Every day."]}, {"id": "4.5", "title": "Healthy habits survey", "instruction": "Lucía interviews Tom. Listen and complete the survey.", "mode": "talk", "lines": [{"who": "Lucía", "text": "Tom, can I ask you some questions for our healthy habits survey?"}, {"who": "Tom", "text": "Sure!"}, {"who": "Lucía", "text": "Do you have breakfast every day?"}, {"who": "Tom", "text": "Yes, I do. I always have cereal and fruit."}, {"who": "Lucía", "text": "Great! Do you drink a lot of water?"}, {"who": "Tom", "text": "No, I don't. I usually drink juice."}, {"who": "Lucía", "text": "Do you play sports?"}, {"who": "Tom", "text": "Yes, I do. I play soccer twice a week."}, {"who": "Lucía", "text": "What time do you go to bed?"}, {"who": "Tom", "text": "I go to bed at ten o'clock on weekdays."}, {"who": "Lucía", "text": "And do you use your cell phone in bed?"}, {"who": "Tom", "text": "Hmm... yes, I do. I sometimes play video games at night."}, {"who": "Lucía", "text": "Oh, Tom! That isn't very healthy!"}, {"who": "Tom", "text": "I know, I know!"}]}, {"id": "4.6", "title": "Reading: A day in Kenji's life", "instruction": "Listen and read about Kenji's day.", "mode": "talk", "lines": [{"who": "Narrator", "text": "A day in Kenji's life."}, {"who": "Narrator", "text": "Kenji Sato is thirteen. He lives in Tokyo, Japan, with his parents and his little sister. On weekdays, Kenji gets up at six thirty. He has breakfast with his family: rice, miso soup and fish. Then he takes the train to school. School starts at eight thirty."}, {"who": "Narrator", "text": "At school, Kenji and his classmates eat lunch in their classroom. After lunch, they clean the classroom together! In Japan, students clean their school every day."}, {"who": "Narrator", "text": "School finishes at three thirty. After school, Kenji goes to the baseball club. He gets home at six. He does his homework and has dinner at seven. Then he watches TV or reads manga. He goes to bed at ten thirty."}, {"who": "Narrator", "text": "On Saturdays, Kenji goes to a special school called juku. On Sundays, he relaxes with his family."}]}, {"id": "4.7", "title": "Weekdays and weekends", "instruction": "Listen and read. Then answer the questions.", "mode": "talk", "lines": [{"who": "Tom", "text": "Ana, what time do you get up on weekdays?"}, {"who": "Ana", "text": "I wake up at six, and I get up at six fifteen. School starts at seven forty-five."}, {"who": "Tom", "text": "Wow, that's early! I get up at seven. And on weekends?"}, {"who": "Ana", "text": "On Saturdays, I get up at eight and I help my mom at the market."}, {"who": "Tom", "text": "Do you help at home, too?"}, {"who": "Ana", "text": "Yes. I usually clean my room on Sundays. And you?"}, {"who": "Tom", "text": "I never clean my room! Ha-ha. My mom always says: Tom, clean your room!"}, {"who": "Ana", "text": "What do you do on Sundays?"}, {"who": "Tom", "text": "I often go to the park with my dad and Lily. We sometimes ride our bikes."}, {"who": "Ana", "text": "That's nice! On Sundays, I always have lunch with my grandparents."}]}, {"id": "4.8", "title": "Pronunciation: -s endings", "instruction": "Listen and repeat. S sound, Z sound, and IZ sound.", "mode": "repeat", "lines": ["S: gets. eats. takes. wakes up. works.", "Z: plays. goes. has. reads. studies.", "IZ: watches. brushes. finishes. washes. dances.", "She gets up at six.", "He plays soccer.", "Tom watches TV at night."]}]}, {"name": "Unit 5 · What Are You Doing?", "short": "Unit 5", "color": "#1A9BBF", "tracks": [{"id": "5.1", "title": "Activities", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["dance.", "sing.", "draw.", "paint.", "cook.", "clean.", "run.", "swim.", "ride a bike.", "skate.", "play video games.", "play the guitar.", "listen to music.", "talk on the phone.", "take photos.", "wait for the bus.", "sleep.", "text a friend."]}, {"id": "5.2", "title": "A noisy house", "instruction": "Ana calls Lucía. Listen and match the people and the actions.", "mode": "talk", "lines": [{"who": "Ana", "text": "Hi, Lucía! What are you doing?"}, {"who": "Lucía", "text": "Hi, Ana! I'm doing my homework, but my house is very noisy right now!"}, {"who": "Ana", "text": "Why? What's happening?"}, {"who": "Lucía", "text": "My mom is cooking dinner and she's singing. My dad is watching a soccer game on TV."}, {"who": "Lucía", "text": "The twins are playing video games, and they're shouting! And my grandma is... sleeping on the sofa!"}, {"who": "Ana", "text": "Ha-ha! Is Michi sleeping, too?"}, {"who": "Lucía", "text": "No, she isn't. The cat is playing with a ball."}]}, {"id": "5.3", "title": "Are you busy?", "instruction": "Tom calls Diego. Listen and tick True or False.", "mode": "talk", "lines": [{"who": "Tom", "text": "Hey, Diego! Are you busy?"}, {"who": "Diego", "text": "Hi, Tom. Yes, I am. I'm studying for the math test."}, {"who": "Tom", "text": "Is Ana studying, too?"}, {"who": "Diego", "text": "No, she isn't. She's practicing for the dance festival."}, {"who": "Tom", "text": "Are your parents at home?"}, {"who": "Diego", "text": "No, they aren't. They're working at the market."}, {"who": "Tom", "text": "OK. I'm in the park with Lucía. We're waiting for you!"}, {"who": "Diego", "text": "Sorry, Tom! I'm studying today. See you tomorrow!"}]}, {"id": "5.4", "title": "Reading: Live from Puno!", "instruction": "Listen and read the live blog.", "mode": "talk", "lines": [{"who": "Narrator", "text": "Live from Puno! The Candelaria Festival."}, {"who": "Narrator", "text": "Hello from Puno! It's February, and today is a very special day: the Festival of the Virgen de la Candelaria. I'm standing in the main square. It's very cold, but people are very happy."}, {"who": "Narrator", "text": "Right now, thousands of dancers are dancing in the streets. They're wearing colorful costumes and big masks. Look at that group! They're dancing the diablada. Musicians are playing drums and trumpets."}, {"who": "Narrator", "text": "Many families are watching from the sidewalks. Some children are eating anticuchos, and some tourists are taking photos. My friend Lucía is here, too. She isn't dancing today. She's recording a video for her blog!"}, {"who": "Narrator", "text": "Every year, the festival takes place in February, and it lasts about two weeks. It is part of UNESCO's list of the Intangible Cultural Heritage of Humanity. It's amazing!"}]}, {"id": "5.5", "title": "Sports Day: live report", "instruction": "Diego reports live from Sports Day. Listen and match the people and the actions.", "mode": "talk", "lines": [{"who": "Diego", "text": "Hello, everyone! This is Diego, live from San Martín School Sports Day!"}, {"who": "Diego", "text": "It's a sunny morning and everyone is here. Look! The first-grade students are running a race. Ana is winning! Come on, Ana!"}, {"who": "Diego", "text": "Next to the field, Tom and Lucía are playing volleyball with their team."}, {"who": "Diego", "text": "The teachers are sitting under a big tree, and Ms. Rivera is taking photos."}, {"who": "Diego", "text": "Some parents are selling food and drinks. Mmm, they're making delicious picarones!"}, {"who": "Diego", "text": "And the school band is playing music... Wait! Our principal is dancing! Ha-ha!"}, {"who": "Diego", "text": "Everyone is having fun today. Back to you in the studio!"}]}, {"id": "5.6", "title": "An interview", "instruction": "Listen and read the interview. Then do the role-play.", "mode": "talk", "lines": [{"who": "Diego", "text": "Excuse me, can I ask you some questions?"}, {"who": "Ana", "text": "Sure!"}, {"who": "Diego", "text": "What's your name?"}, {"who": "Ana", "text": "I'm Ana Quispe."}, {"who": "Diego", "text": "What are you doing today?"}, {"who": "Ana", "text": "I'm running in the one hundred meter race."}, {"who": "Diego", "text": "Are you nervous?"}, {"who": "Ana", "text": "Yes, I am! But I'm happy."}, {"who": "Diego", "text": "Who is watching you?"}, {"who": "Ana", "text": "My parents and my grandparents are watching. Look, they're waving!"}, {"who": "Diego", "text": "Good luck, Ana!"}, {"who": "Ana", "text": "Thanks, Diego!"}]}, {"id": "5.7", "title": "Pronunciation: -ing", "instruction": "Listen and repeat. Say the NG sound at the back of your mouth.", "mode": "repeat", "lines": ["sing. singing.", "play. playing.", "dance. dancing.", "run. running.", "swim. swimming.", "What are you doing?", "I'm reading and listening to music.", "The king is singing and the queen is dancing."]}]}, {"name": "Unit 6 · Food and Quantities", "short": "Unit 6", "color": "#E46C00", "tracks": [{"id": "6.1", "title": "Food and drinks", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["bread.", "rice.", "chicken.", "fish.", "meat.", "eggs.", "cheese.", "potatoes.", "tomatoes.", "onions.", "carrots.", "apples.", "bananas.", "oranges.", "grapes.", "milk.", "water.", "juice.", "sugar.", "yogurt."]}, {"id": "6.2", "title": "In Lucía's kitchen", "instruction": "Listen. Is there any? Tick yes or no.", "mode": "talk", "lines": [{"who": "Mom", "text": "Lucía, let's make lunch. Is there any rice?"}, {"who": "Lucía", "text": "Yes, there is some rice."}, {"who": "Mom", "text": "Are there any tomatoes?"}, {"who": "Lucía", "text": "Yes, there are some tomatoes, but there aren't any onions."}, {"who": "Mom", "text": "Is there any chicken?"}, {"who": "Lucía", "text": "No, there isn't any chicken."}, {"who": "Mom", "text": "Hmm. Is there any milk?"}, {"who": "Lucía", "text": "Yes, there is some milk, and there is some cheese."}, {"who": "Mom", "text": "Good! And are there any eggs?"}, {"who": "Lucía", "text": "Yes, there are six eggs."}, {"who": "Mom", "text": "OK! Let's make rice with eggs today, and we can buy chicken tomorrow."}]}, {"id": "6.3", "title": "Containers and quantities", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["a bottle of water.", "a carton of milk.", "a bag of rice.", "a kilo of tomatoes.", "a slice of cheese.", "a cup of tea.", "a glass of juice.", "a can of tuna.", "a box of cereal.", "a piece of cake.", "a bunch of bananas.", "a dozen eggs."]}, {"id": "6.4", "title": "Grandma's shopping list", "instruction": "Listen and complete Grandma Julia's shopping list.", "mode": "talk", "lines": [{"who": "Grandma Julia", "text": "Lucía, dear, can you go to the market for me?"}, {"who": "Lucía", "text": "Sure, Grandma! What do we need?"}, {"who": "Grandma Julia", "text": "We need two kilos of potatoes, a bag of rice and a bottle of oil."}, {"who": "Lucía", "text": "OK. Anything else?"}, {"who": "Grandma Julia", "text": "Yes. A dozen eggs and a bunch of bananas, please."}, {"who": "Lucía", "text": "How many tomatoes?"}, {"who": "Grandma Julia", "text": "One kilo of tomatoes. Oh, and a carton of milk."}, {"who": "Lucía", "text": "How much money do I need?"}, {"who": "Grandma Julia", "text": "Here you are. Fifty soles. Thank you, dear!"}]}, {"id": "6.5", "title": "At the market", "instruction": "Listen and complete Ana's receipt.", "mode": "talk", "lines": [{"who": "Seller", "text": "Good morning! What would you like?"}, {"who": "Ana", "text": "Good morning. I'd like two kilos of oranges, please. How much are they?"}, {"who": "Seller", "text": "They're three soles a kilo."}, {"who": "Ana", "text": "OK. And can I have a bunch of bananas?"}, {"who": "Seller", "text": "Sure. That's four soles. Anything else?"}, {"who": "Ana", "text": "Yes, a bag of quinoa, please. How much is it?"}, {"who": "Seller", "text": "It's eight soles."}, {"who": "Ana", "text": "How much is that altogether?"}, {"who": "Seller", "text": "Oranges, six soles. Bananas, four soles. Quinoa, eight soles. That's eighteen soles."}, {"who": "Ana", "text": "Here you are. Twenty soles."}, {"who": "Seller", "text": "Here's your change: two soles. Thank you!"}, {"who": "Ana", "text": "Thank you. Have a nice day!"}]}, {"id": "6.6", "title": "Reading: Peruvian superfoods", "instruction": "Listen and read.", "mode": "talk", "lines": [{"who": "Narrator", "text": "Peruvian superfoods."}, {"who": "Narrator", "text": "Peru has some amazing foods. People call them superfoods because they have a lot of vitamins and protein."}, {"who": "Narrator", "text": "Quinoa is a small seed from the Andes. It has a lot of protein. People eat quinoa in soups, salads and desserts. Puno is one of the biggest quinoa producers in Peru. Kiwicha is another small Andean seed. Some children eat it with milk for breakfast."}, {"who": "Narrator", "text": "Maca is a root from the Andes of Junín and Pasco. Some people drink maca with milk for energy."}, {"who": "Narrator", "text": "Aguaymanto is a small orange fruit. It has a lot of vitamin C. You can eat it fresh or in juice and jam."}, {"who": "Narrator", "text": "Peru also produces a lot of cacao, and Peruvian chocolate is famous around the world. But remember: chocolate has a lot of sugar, so don't eat too much!"}]}, {"id": "6.7", "title": "The Healthy Food Fair", "instruction": "Diego visits the stands. Listen and complete the table.", "mode": "talk", "lines": [{"who": "Diego", "text": "Hello, everyone! Welcome to our Healthy Food Fair! Hi, Lucía. What are you selling?"}, {"who": "Lucía", "text": "We're selling fruit salad. It has bananas, apples, papaya and a little honey."}, {"who": "Diego", "text": "Yum! How much is it?"}, {"who": "Lucía", "text": "Two soles a cup."}, {"who": "Diego", "text": "Thanks! Tom, what's on your stand?"}, {"who": "Tom", "text": "Quinoa cookies! They have a lot of fiber and not much sugar."}, {"who": "Diego", "text": "How much are they?"}, {"who": "Tom", "text": "They're fifty cents each."}, {"who": "Diego", "text": "And you, Ana?"}, {"who": "Ana", "text": "We're selling fresh juices: orange, pineapple and carrot. There isn't any sugar in our juices!"}, {"who": "Diego", "text": "How much is a glass?"}, {"who": "Ana", "text": "One sol fifty. Would you like some?"}, {"who": "Diego", "text": "Yes, please! A glass of orange juice!"}]}, {"id": "6.8", "title": "Pronunciation: CH and SH", "instruction": "Listen and repeat. CH like Spanish, SH like silence.", "mode": "repeat", "lines": ["CH: chicken. cheese. chocolate. peach. lunch.", "SH: fish. shop. sugar. shrimp. fresh.", "chip. ship.", "cheap. sheep.", "She sells fresh fish and cheap cheese."]}]}, {"name": "Unit 7 · Describing People and Places", "short": "Unit 7", "color": "#D32F2F", "tracks": [{"id": "7.1", "title": "Physical appearance", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["tall. medium height. short.", "slim. strong.", "long hair. short hair.", "straight hair. wavy hair. curly hair.", "black hair. brown hair. blond hair. red hair. gray hair.", "brown eyes. blue eyes. green eyes.", "glasses. a beard. a mustache. freckles.", "She has long curly black hair.", "He's tall and he has a beard."]}, {"id": "7.2", "title": "Personality", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["friendly.", "generous.", "honest.", "patient.", "brave.", "polite.", "rude.", "creative.", "responsible.", "cheerful.", "lazy.", "serious.", "My grandma is patient and generous."]}, {"id": "7.3", "title": "Lost at the fair", "instruction": "Aunt Elena can't find her son. Listen and choose the correct boy: A, B or C.", "mode": "talk", "lines": [{"who": "Elena", "text": "Excuse me! Please help me! I can't find my son!"}, {"who": "Guard", "text": "OK, don't worry. What's his name?"}, {"who": "Elena", "text": "His name is Mateo. He's ten years old."}, {"who": "Guard", "text": "What does he look like?"}, {"who": "Elena", "text": "He's short and slim. He has short, curly black hair and big brown eyes."}, {"who": "Guard", "text": "Does he have glasses?"}, {"who": "Elena", "text": "Yes, he does. He has round glasses."}, {"who": "Guard", "text": "And what is he like? Is he shy?"}, {"who": "Elena", "text": "No, he isn't. He's very friendly and talkative."}, {"who": "Guard", "text": "Look! Is that him, next to the ice cream stand?"}, {"who": "Elena", "text": "Yes! Mateo! Thank you so much!"}]}, {"id": "7.4", "title": "Chicago or Juliaca?", "instruction": "Ana and Tom compare Chicago and Juliaca. Listen and tick C (Chicago) or J (Juliaca).", "mode": "talk", "lines": [{"who": "Ana", "text": "Tom, is Chicago bigger than Juliaca?"}, {"who": "Tom", "text": "Oh, yes! Chicago is much bigger. About two point seven million people live there."}, {"who": "Ana", "text": "Wow! Is it colder than Juliaca?"}, {"who": "Tom", "text": "In winter, yes. Chicago is colder in winter. It snows a lot! But here in Juliaca, the nights in July are colder."}, {"who": "Ana", "text": "Is Chicago more beautiful?"}, {"who": "Tom", "text": "Chicago has tall buildings and a big lake, Lake Michigan. But for me, Juliaca is more interesting, because everything is new!"}, {"who": "Ana", "text": "And the food?"}, {"who": "Tom", "text": "Peruvian food is better! Chicago pizza is good, but I love lomo saltado!"}]}, {"id": "7.5", "title": "Places in town", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["museum.", "park.", "main square.", "cathedral.", "market.", "mall.", "hospital.", "bank.", "hotel.", "restaurant.", "bus station.", "airport.", "stadium.", "bridge.", "lake.", "mountain."]}, {"id": "7.6", "title": "Reading: Welcome to Puno!", "instruction": "Listen and read the tourist guide.", "mode": "talk", "lines": [{"who": "Narrator", "text": "Welcome to Puno!"}, {"who": "Narrator", "text": "Puno is a city in the south of Peru, next to Lake Titicaca. It's about three thousand eight hundred meters above sea level, so it's one of the highest cities in Peru. The weather is cold and dry, and the nights are colder than the days."}, {"who": "Narrator", "text": "Lake Titicaca is the most famous place in the region. People say it's the highest navigable lake in the world: big boats can travel on it! On the lake, you can visit the Uros floating islands. The islands are made of totora reeds. The people there are very friendly, and they make beautiful handicrafts."}, {"who": "Narrator", "text": "Puno is called the Folklore Capital of Peru because it has a lot of traditional dances and music. The biggest festival is the Candelaria, in February."}, {"who": "Narrator", "text": "Near Puno is Juliaca, the biggest city in the region. It's busier and more modern than Puno, and it has an airport. If you visit Puno, take a warm jacket and drink a cup of muña tea. It's the best drink for the cold!"}]}, {"id": "7.7", "title": "At the tourist office", "instruction": "A tourist asks Lucía for information. Listen and answer the questions.", "mode": "talk", "lines": [{"who": "Tourist", "text": "Hi! I'm visiting Puno for three days. What's the best place to visit?"}, {"who": "Lucía", "text": "The best place is Lake Titicaca. You can take a boat to the Uros islands. It's the most beautiful trip!"}, {"who": "Tourist", "text": "Great! And where can I eat? I'd like to try Peruvian food."}, {"who": "Lucía", "text": "The best restaurants for fish are near the port. Try the trout! It's delicious."}, {"who": "Tourist", "text": "Is there a museum in Puno?"}, {"who": "Lucía", "text": "Yes, there's the Carlos Dreyer Museum. It's smaller than the museums in Lima, but it's very interesting."}, {"who": "Tourist", "text": "Thank you! You're very kind."}, {"who": "Lucía", "text": "You're welcome! Oh, and take a warm jacket, because it's colder at night!"}]}, {"id": "7.8", "title": "Pronunciation: -er and than", "instruction": "Listen and repeat. Say the American R in -er, and say than quickly.", "mode": "repeat", "lines": ["taller.", "bigger.", "colder.", "better.", "taller than.", "bigger than.", "Tom is taller than Diego.", "Juliaca is colder than Lima.", "Peruvian food is better than pizza!"]}]}, {"name": "Unit 8 · My World and My Future", "short": "Unit 8", "color": "#00897B", "tracks": [{"id": "8.1", "title": "Talents and abilities", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["sing.", "dance.", "play the guitar.", "play the drums.", "play the piano.", "draw.", "paint.", "cook.", "swim.", "ride a bike.", "skateboard.", "play chess.", "do magic tricks.", "write stories.", "take photos.", "fix things.", "speak Quechua.", "speak Aymara."]}, {"id": "8.2", "title": "Talent show auditions", "instruction": "Listen. What can they do? What can't they do? Complete the table.", "mode": "talk", "lines": [{"who": "Ms. Rivera", "text": "OK, everybody. It's time for the talent show auditions! Diego, what can you do?"}, {"who": "Diego", "text": "I can play the drums! But I can't sing."}, {"who": "Ms. Rivera", "text": "Great! Lucía?"}, {"who": "Lucía", "text": "I can dance caporales and morenada. And I can play the charango a little."}, {"who": "Ms. Rivera", "text": "Wonderful! Tom, can you dance?"}, {"who": "Tom", "text": "No, I can't dance at all! But I can do magic tricks."}, {"who": "Ms. Rivera", "text": "Magic! Cool! And Ana?"}, {"who": "Ana", "text": "I can sing very well... I think! Ha-ha. And I can play the guitar a little."}, {"who": "Ms. Rivera", "text": "Perfect. You can all be in the show!"}]}, {"id": "8.3", "title": "Jobs", "instruction": "Listen and repeat.", "mode": "repeat", "lines": ["doctor.", "nurse.", "teacher.", "engineer.", "police officer.", "firefighter.", "chef.", "farmer.", "mechanic.", "artist.", "musician.", "programmer.", "scientist.", "vet.", "pilot.", "tour guide.", "journalist.", "athlete."]}, {"id": "8.4", "title": "What do you want to be?", "instruction": "Listen and match the students, the jobs and the reasons.", "mode": "talk", "lines": [{"who": "Ms. Rivera", "text": "Today is Career Day! Tell me: what do you want to be?"}, {"who": "Tom", "text": "I want to be a scientist, because I love science and I want to help the planet."}, {"who": "Lucía", "text": "I want to be a journalist, because I love making videos and telling stories."}, {"who": "Diego", "text": "I want to be a chef, because I can cook very well. My grandma's recipes are the best!"}, {"who": "Ana", "text": "I want to be an English teacher, because I love languages and I like helping people."}]}, {"id": "8.5", "title": "Vacation plans", "instruction": "Listen. What are they going to do on vacation? Complete the sentences.", "mode": "talk", "lines": [{"who": "Ms. Rivera", "text": "The school year is almost over! What are you going to do on your vacation?"}, {"who": "Tom", "text": "I'm going to visit my grandparents in Texas."}, {"who": "Lucía", "text": "I'm going to travel to La Paz. I'm going to see my cousins."}, {"who": "Diego", "text": "I'm not going to travel. I'm going to play in a soccer tournament."}, {"who": "Ana", "text": "I'm going to help my mom at the market, and I'm going to read a lot of books in English!"}, {"who": "Ms. Rivera", "text": "Great plans! And I'm going to sleep a lot! Ha-ha."}]}, {"id": "8.6", "title": "Reading: Dream big!", "instruction": "Listen and read about three young people and their dreams.", "mode": "talk", "lines": [{"who": "Narrator", "text": "Dream big! Three young people from the south of Peru talk about their talents and dreams."}, {"who": "Narrator", "text": "Sara, thirteen, from Cusco. I can speak three languages: Quechua, Spanish and English! I love my city, and I can explain its history to visitors. I want to be a tour guide. After school, I'm going to study tourism at university."}, {"who": "Narrator", "text": "Marco, twelve, from Arequipa. I can't play soccer very well, but I can build robots! I'm in the robotics club at my school. My dream is to be a programmer. Next year, I'm going to take an online programming course."}, {"who": "Narrator", "text": "Rosa, fourteen, from Ilave, in Puno. I live on a farm with my family. We have alpacas and sheep. I can take care of animals, and I'm very patient. I want to be a vet. This summer, I'm going to help a vet in my town. I'm going to learn a lot!"}, {"who": "Narrator", "text": "What about you? What can you do? What do you want to be?"}]}, {"id": "8.7", "title": "Radio interview: Talents and dreams", "instruction": "Listen and read the interview. Then answer the questions.", "mode": "talk", "lines": [{"who": "Diego", "text": "Welcome to Radio San Martín! Today I'm talking to Ana Quispe. Hi, Ana!"}, {"who": "Ana", "text": "Hi, Diego!"}, {"who": "Diego", "text": "Ana, what can you do? What's your talent?"}, {"who": "Ana", "text": "I can sing, and I can play the guitar a little."}, {"who": "Diego", "text": "Can you dance?"}, {"who": "Ana", "text": "Ha-ha, no, I can't! Not very well."}, {"who": "Diego", "text": "What do you want to be in the future?"}, {"who": "Ana", "text": "I want to be an English teacher."}, {"who": "Diego", "text": "Why?"}, {"who": "Ana", "text": "Because I love English and I like helping people."}, {"who": "Diego", "text": "What are you going to do to make your dream come true?"}, {"who": "Ana", "text": "I'm going to study a lot, and next year I'm going to practice English with Tom every week."}, {"who": "Diego", "text": "Great! Good luck, Ana!"}, {"who": "Ana", "text": "Thank you!"}]}, {"id": "8.8", "title": "Pronunciation: can and can't", "instruction": "Listen and repeat. Can is short and weak. Can't is long and strong.", "mode": "repeat", "lines": ["can. can't.", "I can swim.", "I can't swim.", "She can dance.", "She can't dance.", "Can you sing? Yes, I can.", "Can you cook? No, I can't."]}]}];
+const CAST={"Narrator": ["n", 0, "🎙️", "#455a64"], "Ana": ["f", 1, "👧🏽", "#e91e63"], "Lucía": ["f", 1, "👧🏻", "#8e24aa"], "Sofía": ["f", 1, "👧", "#d81b60"], "Emma": ["f", 1, "👱‍♀️", "#f06292"], "Tom": ["m", 1, "👦🏼", "#1e88e5"], "Diego": ["m", 1, "👦🏽", "#00897b"], "Kenji": ["m", 1, "👦🏻", "#3949ab"], "Lucas": ["m", 1, "🧒🏽", "#43a047"], "Daniel": ["m", 1, "👦", "#6d4c41"], "Ms. Rivera": ["f", 0, "👩🏽‍🏫", "#f57c00"], "Mrs. Smith": ["f", 0, "👩🏼‍💼", "#c2185b"], "Mr. Torres": ["m", 0, "👨🏽‍💼", "#5d4037"], "Students": ["g", 1, "🧑‍🤝‍🧑", "#00acc1"], "Mom": ["f", 0, "👩🏽", "#ef6c00"], "Grandma Julia": ["f", 0, "👵🏽", "#6a1b9a"], "Seller": ["m", 0, "🧑🏽‍🌾", "#2e7d32"], "Elena": ["f", 0, "👩🏽‍🦱", "#c2185b"], "Guard": ["m", 0, "💂🏽", "#37474f"], "Tourist": ["f", 0, "👩🏼‍🦰", "#0277bd"]};
+const $=id=>document.getElementById(id);
+const synth=window.speechSynthesis||null;
+let store={};try{store=JSON.parse(localStorage.getItem('meb_settings')||'{}')}catch(e){}
+function save(){try{localStorage.setItem('meb_settings',JSON.stringify(store))}catch(e){}}
+let speed=store.speed||0.9;
+function toast(m){const t=$('toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3200)}
+
+/* ================= VOICES ================= */
+let voices=[],assign={};
+const FEM=/(female|aria|jenny|michelle|\bana\b|emma|ava|sara|nancy|jane|amber|ashley|cora|elizabeth|monica|samantha|allison|susan|victoria|karen|moira|tessa|fiona|zira|hazel|libby|sonia|natasha|clara|joanna|salli|kimberly|ivy|kendra|google us english|serena|catherine|veena|neerja)/i;
+const MAL=/(\bmale|guy|christopher|eric|roger|steffan|andrew|brian|davis|tony|jason|brandon|jacob|alex|fred|daniel|\btom\b|aaron|arthur|rishi|david|mark|george|ryan|thomas|william|liam|matthew|justin|joey|ravi|prabhat)/i;
+const KIDV=/\bana\b.*(natural|online)/i;
+function gender(v){if(/female/i.test(v.name))return'f';if(MAL.test(v.name))return'm';if(FEM.test(v.name))return'f';return'?'}
+function score(v){let s=0;if(/^en[-_]US/i.test(v.lang))s+=50;else if(/^en[-_]CA/i.test(v.lang))s+=30;else if(/^en/i.test(v.lang))s+=15;
+  if(/natural|neural|online|premium|enhanced/i.test(v.name))s+=40;if(/google/i.test(v.name))s+=10;return s}
+function loadVoices(){
+  if(!synth)return;
+  voices=synth.getVoices().filter(v=>/^en/i.test(v.lang)).sort((a,b)=>score(b)-score(a));
+  const saved=store.voices||{};assign={};const used=new Map();
+  const PRI=['Ms. Rivera','Ana','Tom','Lucía','Diego','Mrs. Smith','Mr. Torres','Kenji','Sofía','Lucas','Emma','Daniel','Mom','Grandma Julia','Seller','Elena','Guard','Tourist','Students','Narrator'];
+  const order=[...PRI.filter(n=>CAST[n]),...Object.keys(CAST).filter(n=>!PRI.includes(n))];
+  for(const name of order){
+    const [g,kid]=CAST[name];
+    if(saved[name]&&voices.find(v=>v.name===saved[name])){assign[name]=saved[name];used.set(saved[name],(used.get(saved[name])||0)+1);continue}
+    const want=g==='m'?'m':(g==='f'?'f':null);
+    let pool=voices.filter(v=>!want||gender(v)===want);
+    if(!kid&&pool.length>1)pool=pool.filter(v=>!KIDV.test(v.name));
+    if(kid&&g==='f'){const k=voices.find(v=>KIDV.test(v.name));if(k&&!used.get(k.name))pool=[k,...pool]}
+    if(!pool.length)pool=voices.filter(v=>gender(v)==='?');
+    if(!pool.length)pool=voices;
+    pool=[...pool].sort((a,b)=>(used.get(a.name)||0)-(used.get(b.name)||0));
+    if(pool[0]){assign[name]=pool[0].name;used.set(pool[0].name,(used.get(pool[0].name)||0)+1)}
+  }
+  const vi=$('vinfo'),us=voices.filter(v=>/^en[-_]US/i.test(v.lang)).length;
+  if(!synth){vi.className='vinfo warn';vi.textContent='⚠️ This browser can’t play audio. Please use Google Chrome or Microsoft Edge.'}
+  else if(!voices.length){vi.className='vinfo warn';vi.textContent='⚠️ No English voices found. Please use Google Chrome or Microsoft Edge.'}
+  else if(voices.length<4){vi.className='vinfo warn';vi.innerHTML=`⚠️ Your device has only ${voices.length} English voice(s), so the characters sound different mainly by pitch. <b>For natural, different voices, use Microsoft Edge on a computer.</b> On Android: Settings → Language → Text-to-speech output → install "English (United States)".`}
+  else{vi.className='vinfo';vi.textContent=`✅ ${voices.length} English voices (${us} American). Each character has a different voice.`}
+  buildCast();
+}
+function buildCast(){
+  const g=$('castgrid');g.innerHTML='';
+  Object.keys(CAST).forEach(name=>{
+    const r=document.createElement('div');r.className='castrow';
+    r.innerHTML=`<span>${CAST[name][2]}</span><b>${name}</b>`;
+    const s=document.createElement('select');
+    voices.forEach(v=>{const o=document.createElement('option');o.value=v.name;o.textContent=`${v.name.replace(/Microsoft |Online |\(Natural\)| - English.*$/g,'')} (${v.lang})`;s.appendChild(o)});
+    s.value=assign[name]||'';
+    s.onchange=()=>{assign[name]=s.value;store.voices=store.voices||{};store.voices[name]=s.value;save()};
+    const b=document.createElement('button');b.textContent='▶';b.title='Test';
+    b.onclick=()=>{Player.stop();setTimeout(()=>say(`Hi! I'm ${name==='Narrator'?'the narrator':name}.`,name,null),120)};
+    r.appendChild(s);r.appendChild(b);g.appendChild(r);
+  });
+}
+if(synth){loadVoices();synth.onvoiceschanged=loadVoices;setTimeout(loadVoices,700)}
+
+function styleFor(who,text){
+  const c=CAST[who]||CAST.Narrator,[g,kid]=c;
+  const v=voices.find(x=>x.name===assign[who])||voices[0];
+  const sharers=Object.keys(assign).filter(k=>assign[k]===assign[who]);
+  const idx=Math.max(0,sharers.indexOf(who));
+  let pitch=g==='n'?1:(g==='m'?(kid?1.05:0.75):(kid?1.3:1.0));
+  if(g==='g')pitch=1.35;
+  if(sharers.length>1)pitch+=((idx%3)-1)*0.18;
+  let rate=speed*(kid?1.03:0.97);
+  if(/!$/.test(text)){pitch+=0.08;rate*=1.04}
+  if(/\?$/.test(text))pitch+=0.04;
+  return {v,pitch:Math.min(2,Math.max(0.1,pitch)),rate};
+}
+/* speak one piece of text; long texts are split into sentences (Chrome cuts long utterances).
+   `run` is the run id: if it changes, we stop immediately. */
+function speakOne(text,who){return new Promise(res=>{
+  if(!synth)return res();
+  const u=new SpeechSynthesisUtterance(text),st=styleFor(who||'Narrator',text);
+  if(st.v)u.voice=st.v;u.lang=st.v?st.v.lang:'en-US';u.pitch=st.pitch;u.rate=st.rate;
+  const t=setTimeout(res,text.length*170+5000);
+  u.onend=u.onerror=()=>{clearTimeout(t);res()};
+  synth.speak(u);
+});}
+async function say(text,who,run){
+  const parts=text.length>160?text.match(/[^.!?]+[.!?]+["']?|[^.!?]+$/g):[text];
+  for(const p of parts){
+    if(run!==null&&run!==Player.run)return false;
+    await speakOne(p.trim(),who);
+  }
+  return run===null||run===Player.run;
+}
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function waitRun(ms,run){const end=Date.now()+ms;while(Date.now()<end){if(run!==Player.run)return false;await wait(Math.min(120,end-Date.now()))}return run===Player.run}
+
+/* ================= SOUND EFFECTS ================= */
+let ac=null;
+function tone(f,d,t0=0,type='sine',vol=.16){if(!$('sfx').checked)return;try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();
+  const o=ac.createOscillator(),g=ac.createGain(),s=ac.currentTime+t0;o.type=type;o.frequency.value=f;
+  g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(vol,s+.02);g.gain.exponentialRampToValueAtTime(.001,s+d);
+  o.connect(g).connect(ac.destination);o.start(s);o.stop(s+d+.05)}catch(e){}}
+const jingle=()=>{tone(523,.25,0);tone(659,.25,.15);tone(784,.45,.3)};
+const ding=()=>tone(880,.5,0,'triangle',.12);
+const bell=()=>{for(let i=0;i<6;i++){tone(1318,.18,i*.2,'square',.05);tone(1046,.18,i*.2+.1,'square',.05)}};
+const tada=()=>{tone(784,.18,0);tone(988,.18,.12);tone(1175,.5,.24)};
+
+/* ================= PLAYER (one track at a time) ================= */
+const Player={
+  run:0,track:null,unit:null,idx:0,playing:false,queue:null,
+  card(){return this.track?document.querySelector(`.card[data-id="${this.track.id}"]`):null},
+  async start(track,unit,{fromIdx=0,intro=true,queue=null}={}){
+    if(!synth){toast('Your browser can’t play this audio. Try Chrome or Edge.');return}
+    this.halt();                         // stop whatever is playing (new run id)
+    const run=this.run;
+    this.track=track;this.unit=unit;this.idx=fromIdx;this.playing=true;this.queue=queue;
+    this.render();
+    await wait(130);                     // let the browser finish cancel()
+    if(run!==this.run)return;
+    if(intro){
+      jingle();if(!await waitRun(850,run))return;
+      if(track.id.endsWith('.9')&&track.title.includes('First day')){bell();if(!await waitRun(1300,run))return}
+      this.speaker('Narrator');
+      if(!await say(`Track ${track.id}. ${track.instruction}`,'Narrator',run))return;
+      if(!await waitRun(500,run))return;
+    }
+    await this.loop(run);
+  },
+  async loop(run){
+    const t=this.track,lines=t.lines;
+    let prev=null;
+    while(this.idx<lines.length){
+      if(run!==this.run)return;
+      const l=lines[this.idx],text=typeof l==='string'?l:l.text,who=typeof l==='string'?'Narrator':l.who;
+      if(who==='Narrator'&&/^(Conversation|Number)/.test(text)&&this.idx>0){ding();if(!await waitRun(450,run))return}
+      this.speaker(who);this.render();
+      if(prev&&prev!==who){if(!await waitRun(200,run))return}
+      if(!await say(text,who,run))return;
+      prev=who;
+      const gap=t.mode==='repeat'?Math.max(1700,text.length*100/speed):(who==='Narrator'?1700:300);
+      if(!await waitRun(gap,run))return;
+      this.idx++;
+    }
+    if(run!==this.run)return;
+    tada();
+    const c=this.card();if(c)c.classList.add('heard');
+    let heard=store.heard||[];if(!heard.includes(t.id)){heard.push(t.id);store.heard=heard;save()}
+    if(this.queue&&this.queue.length){const n=this.queue.shift();await wait(1200);if(run===this.run)this.start(n.t,n.u,{queue:this.queue});return}
+    this.playing=false;this.idx=0;this.render(true);
+  },
+  halt(){this.run++;if(synth)synth.cancel();this.playing=false},
+  pause(){if(!this.track)return;this.halt();this.render()},
+  resume(){if(!this.track)return;this.start(this.track,this.unit,{fromIdx:this.idx,intro:false,queue:this.queue})},
+  toggle(){this.playing?this.pause():this.resume()},
+  step(d){if(!this.track)return;const n=Math.min(this.track.lines.length-1,Math.max(0,this.idx+d));this.idx=n;this.start(this.track,this.unit,{fromIdx:n,intro:false,queue:this.queue})},
+  stop(){this.halt();this.track=null;this.queue=null;this.idx=0;this.render(true)},
+  speaker(who){
+    const c=this.card();if(!c)return;
+    c.querySelectorAll('.who').forEach(w=>w.classList.toggle('talk',w.dataset.who===who));
+    const cc=CAST[who]||CAST.Narrator;$('pAv').textContent=cc[2];$('pAv').style.borderColor=cc[3];
+    $('pSub').dataset.who=who;
+  },
+  render(ended){
+    // cards
+    document.querySelectorAll('.card').forEach(c=>{
+      const me=this.track&&c.dataset.id===this.track.id;
+      c.classList.toggle('active',!!me);
+      const b=c.querySelector('.pbtn');b.textContent=me&&this.playing?'⏸':'▶';
+      b.setAttribute('aria-label',me&&this.playing?'Pause':'Play');
+      if(!me||ended){c.querySelectorAll('.who').forEach(w=>w.classList.remove('talk'));c.querySelectorAll('.now').forEach(x=>x.classList.remove('now'))}
+    });
+    const c=this.card();
+    if(c&&!ended){const rows=c.querySelectorAll('.line,.bub');rows.forEach((r,i)=>r.classList.toggle('now',i===this.idx&&this.playing))}
+    // mini player
+    const p=$('player');
+    if(!this.track||ended){p.classList.remove('show');return}
+    p.classList.add('show');p.style.setProperty('--pc',this.unit.color);
+    $('pTitle').textContent=`${this.track.id} · ${this.track.title}`;
+    const n=this.track.lines.length,who=$('pSub').dataset.who||'';
+    $('pSub').textContent=`${this.playing?'Playing':'Paused'} · sentence ${Math.min(this.idx+1,n)} of ${n}${who&&who!=='Narrator'?' · speaker: '+who:''}`;
+    $('pBar').style.width=`${Math.round((this.idx)/n*100)}%`;
+    $('bPlay').textContent=this.playing?'⏸':'▶';
+  }
+};
+$('bPlay').onclick=()=>Player.toggle();
+$('bStop').onclick=()=>Player.stop();
+$('bPrev').onclick=()=>Player.step(-1);
+$('bNext').onclick=()=>Player.step(1);
+
+/* ================= UI ================= */
+const TYPE={repeat:'🔁 Listen and repeat',talk:'💬 Listening'};
+function typeOf(t){if(/^Reading/.test(t.title))return'📖 Reading';if(/^Pronunciation/.test(t.title))return'🔊 Pronunciation';return TYPE[t.mode]||''}
+function hexToLight(h){const n=parseInt(h.slice(1),16);const r=n>>16,g=(n>>8)&255,b=n&255;return `rgba(${r},${g},${b},.13)`}
+function cardFor(t,u){
+  const d=document.createElement('div');d.className='card';d.dataset.id=t.id;
+  d.style.setProperty('--c',u.color);d.style.setProperty('--cl',hexToLight(u.color));
+  if((store.heard||[]).includes(t.id))d.classList.add('heard');
+  d.innerHTML=`<div class="row"><div class="num">${t.id}</div><div class="info"><b>${t.title}</b><div class="ins">${t.instruction}</div><span class="tag">${typeOf(t)}</span></div><button class="pbtn" aria-label="Play">▶</button></div>
+  <div class="stage"></div><div class="foot"><button class="toggle">📄 Show text</button><span class="done">✓ Listened</span></div><div class="script"></div>`;
+  const stage=d.querySelector('.stage'),box=d.querySelector('.script');
+  const people=[...new Set(t.lines.map(l=>typeof l==='string'?'Narrator':l.who))];
+  if(t.mode!=='repeat'||people.length>1)people.forEach(p=>{const c=CAST[p]||CAST.Narrator;
+    const w=document.createElement('div');w.className='who';w.dataset.who=p;
+    w.innerHTML=`<div class="av" style="border-color:${c[3]}">${c[2]}</div><small>${p}</small>`;stage.appendChild(w)});
+  else stage.style.display='none';
+  const speakers=people.filter(p=>p!=='Narrator');
+  t.lines.forEach(l=>{
+    if(typeof l==='string'||l.who==='Narrator'||t.mode==='repeat'||speakers.length<2){const e=document.createElement('p');e.className='line';
+      e.innerHTML=typeof l==='string'?l:(l.who==='Narrator'?`<i>${l.text}</i>`:`<b>${l.who}:</b> ${l.text}`);box.appendChild(e);return}
+    const c=CAST[l.who]||CAST.Narrator,side=speakers.indexOf(l.who)%2?'right':'left';
+    const e=document.createElement('div');e.className='bub '+side;
+    e.innerHTML=`<span class="em">${c[2]}</span><div class="tx" style="border-color:${c[3]}"><b style="color:${c[3]}">${l.who}</b>${l.text}</div>`;box.appendChild(e)});
+  d.querySelector('.toggle').onclick=e=>{const s=box.classList.toggle('show');e.currentTarget.textContent=s?'🙈 Hide text':'📄 Show text'};
+  d.querySelector('.pbtn').onclick=()=>{
+    if(Player.track&&Player.track.id===t.id){Player.toggle();return}
+    Player.start(t,u);
+  };
+  return d;
+}
+let curUnit=0;
+function slug(i){const s=UNITS[i].short;return /^Unit (\d+)/.test(s)?'unit-'+s.split(' ')[1]:'starter'}
+function showUnit(i,keepHash){
+  curUnit=i;store.unit=i;save();const u=UNITS[i];
+  document.documentElement.style.setProperty('--u',u.color);
+  document.querySelectorAll('.tab').forEach((t,k)=>t.classList.toggle('on',k===i));
+  $('uTitle').textContent=u.name;$('uSub').textContent=`${u.tracks.length} tracks`;
+  $('playAll').style.display='';
+  const list=$('list');list.innerHTML='';u.tracks.forEach(t=>list.appendChild(cardFor(t,u)));
+  Player.render();
+  if(!keepHash){try{history.replaceState(null,'','#'+slug(i))}catch(e){location.hash=slug(i)}}
+}
+function search(q){
+  q=q.trim().toLowerCase();
+  if(!q){showUnit(curUnit,true);return}
+  const list=$('list');list.innerHTML='';let n=0;
+  UNITS.forEach(u=>u.tracks.forEach(t=>{
+    const hay=(t.id+' '+t.title+' '+t.instruction+' '+u.name+' '+t.lines.map(l=>typeof l==='string'?l:l.text).join(' ')).toLowerCase();
+    if(t.id===q||t.id.startsWith(q)&&/^\d/.test(q)||(!/^\d/.test(q)&&hay.includes(q))){list.appendChild(cardFor(t,u));n++}
+  }));
+  $('uTitle').textContent=`Results for "${q}"`;$('uSub').textContent=`${n} track(s)`;$('playAll').style.display='none';
+  if(!n)list.innerHTML='<div class="empty">No tracks found. Try a number like 3.2 or a word like food.</div>';
+  Player.render();
+}
+UNITS.forEach((u,i)=>{const b=document.createElement('button');b.className='tab';b.textContent=u.short;b.onclick=()=>{$('q').value='';showUnit(i)};$('tabs').appendChild(b)});
+$('q').addEventListener('input',e=>search(e.target.value));
+$('playAll').onclick=()=>{const u=UNITS[curUnit];const q=u.tracks.slice(1).map(t=>({t,u}));Player.start(u.tracks[0],u,{queue:q})};
+function fromHash(){const k=location.hash.slice(1);let i=UNITS.findIndex((u,j)=>slug(j)===k);const m=i>=0;if(!m)i=Math.min(UNITS.length-1,store.unit||0);showUnit(i,m)}
+window.addEventListener('hashchange',fromHash);
+/* settings */
+$('openSet').onclick=()=>$('sheet').classList.add('show');
+$('closeSet').onclick=()=>$('sheet').classList.remove('show');
+$('sheet').onclick=e=>{if(e.target.id==='sheet')$('sheet').classList.remove('show')};
+document.querySelectorAll('#speedSeg button').forEach(b=>{
+  if(+b.dataset.v===speed)b.classList.add('on');
+  b.onclick=()=>{speed=+b.dataset.v;store.speed=speed;save();document.querySelectorAll('#speedSeg button').forEach(x=>x.classList.toggle('on',x===b))}});
+$('sfx').checked=store.sfx!==false;$('sfx').onchange=e=>{store.sfx=e.target.checked;save()};
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&Player.playing)Player.pause()});
+fromHash();
+</script>
+</body></html>
